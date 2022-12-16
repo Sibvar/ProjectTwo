@@ -27,16 +27,16 @@ public class BooksService {
         return booksRepository.findAll();
     }
 
-    public List<Book> sortBooksByYear() {
-        return booksRepository.findAll(Sort.by("bookYear"));
+    public List<Book> sortBooksByYear(boolean sort) {
+        return sort ? booksRepository.findAll(Sort.by("bookYear")) : findAll();
     }
 
     public List<Book> pagesOfBooks(int page, int booksPerPage) {
         return booksRepository.findAll(PageRequest.of(page, booksPerPage)).getContent();
     }
 
-    public List<Book> sortPagesOfBooks(int page, int booksPerPage) {
-        return booksRepository.findAll(PageRequest.of(page, booksPerPage, Sort.by("bookYear"))).getContent();
+    public List<Book> sortPagesOfBooks(boolean sort, int page, int booksPerPage) {
+        return sort ? booksRepository.findAll(PageRequest.of(page, booksPerPage, Sort.by("bookYear"))).getContent() : pagesOfBooks(page, booksPerPage);
     }
 
     public Book findOne(int id) {
@@ -44,7 +44,11 @@ public class BooksService {
     }
 
     public List<Book> findByBookName(String bookName) {
-        return booksRepository.findBookByBookName(bookName);
+        return booksRepository.findByBookName(bookName);
+    }
+
+    public List<Book> findByBookNameStartsWith(String bookName) {
+        return booksRepository.findByBookNameStartsWith(bookName);
     }
 
     @Transactional

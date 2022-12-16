@@ -8,6 +8,6 @@ import java.util.List;
 
 @Repository
 public interface BooksRepository extends JpaRepository<Book, Integer> {
-    List<Book> findBookByBookName(String bookName);
-    List<Book> findBookByBookNameStartsWith(String bookName);
+    List<Book> findByBookName(String bookName);
+    List<Book> findByBookNameStartsWith(String bookName);
 }
