@@ -35,7 +35,6 @@ public class Book {
     private Date dateOfAssignment;
 
     @Transient
-    @Column(name = "is_expired")
     private boolean isExpired;
 
     @ManyToOne

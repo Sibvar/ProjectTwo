@@ -1,4 +1,7 @@
-driver=
-url=
-db.username=
-password=
+hibernate.driver_class=
+hibernate.connection.url=
+hibernate_connection.name=
+hibernate_connection.pass=
+
+hibernate.dialect=
+hibernate.show_sql=

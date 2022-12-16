@@ -4,6 +4,8 @@ import by.samuseu.springcourse.project.two.models.Book;
 import by.samuseu.springcourse.project.two.models.Person;
 import by.samuseu.springcourse.project.two.repositories.BooksRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,12 +27,24 @@ public class BooksService {
         return booksRepository.findAll();
     }
 
+    public List<Book> sortBooksByYear() {
+        return booksRepository.findAll(Sort.by("bookYear"));
+    }
+
+    public List<Book> pagesOfBooks(int page, int booksPerPage) {
+        return booksRepository.findAll(PageRequest.of(page, booksPerPage)).getContent();
+    }
+
+    public List<Book> sortPagesOfBooks(int page, int booksPerPage) {
+        return booksRepository.findAll(PageRequest.of(page, booksPerPage, Sort.by("bookYear"))).getContent();
+    }
+
     public Book findOne(int id) {
         return booksRepository.findById(id).orElse(null);
     }
 
-    public Book findByBookName(String bookName) {
-        return booksRepository.findByBookName(bookName);
+    public List<Book> findByBookName(String bookName) {
+        return booksRepository.findBookByBookName(bookName);
     }
 
     @Transactional

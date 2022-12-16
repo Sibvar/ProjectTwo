@@ -25,7 +25,7 @@ public class BookValidator implements Validator {
     public void validate(Object target, Errors errors) {
         Book book = (Book) target;
 
-//        if (booksService.findByName(book.getBookName()).isPresent()) {
+//        if (booksService.findByBookName(book.getBookName()).isPresent()) {
 //            errors.rejectValue("bookName", "", "Книга с таким названием уже есть в базе");
 //        }
     }
