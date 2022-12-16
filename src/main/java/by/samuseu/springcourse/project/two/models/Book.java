@@ -1,21 +1,78 @@
-package by.samuseu.springcourse.project.one.models;
+package by.samuseu.springcourse.project.two.models;
 
+import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.util.Date;
 
+@Entity
+@Table(name = "book")
 public class Book {
 
+    @Id
+    @Column(name = "book_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int bookId;
+
+    @Column(name = "book_name")
     @NotEmpty(message = "Укажите название книги")
     @Size(min = 2, max = 40, message = "Название должно быть от 2 до 40 символов")
     private String bookName;
+
+    @Column(name = "book_author")
     @NotEmpty(message = "Укажите автора книги")
     @Pattern(regexp = "[А-Я][а-я]+\\s[А-Я][а-я]+$", message = "Автор в формате: Иван Иванов")
     private String bookAuthor;
+
+    @Column(name = "book_year")
     @Min(value = 1, message = "Укажите год издания книги")
     private int bookYear;
+
+    @Column(name = "date_of_assignment")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateOfAssignment;
+
+    @Transient
+    @Column(name = "is_expired")
+    private boolean isExpired;
+
+    @ManyToOne
+    @JoinColumn(name = "person_id", referencedColumnName = "person_id")
+    private Person owner;
+
+    public Book() {}
+
+    public Book(String bookName, String bookAuthor, int bookYear) {
+        this.bookName = bookName;
+        this.bookAuthor = bookAuthor;
+        this.bookYear = bookYear;
+    }
+
+    public Date getDateOfAssignment() {
+        return dateOfAssignment;
+    }
+
+    public void setDateOfAssignment(Date dateOfAssignment) {
+        this.dateOfAssignment = dateOfAssignment;
+    }
+
+    public boolean isExpired() {
+        return isExpired;
+    }
+
+    public void setExpired(boolean expired) {
+        isExpired = expired;
+    }
+
+    public Person getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Person owner) {
+        this.owner = owner;
+    }
 
     public int getBookId() {
         return bookId;
