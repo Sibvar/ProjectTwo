@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeleafe.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Читатель</title>
@@ -10,7 +10,7 @@
 <div th:if="${not #lists.isEmpty(personBooks)}">
     <p th:text="'Книги:'">text</p>
     <div th:each="book : ${personBooks}">
-    <a th:text="${book.getBookName() + ', ' + book.getBookAuthor() + ', ' + book.getBookYear()}">user</a>
+    <a th:style="${book.isExpired()} ? 'color: red' : 'color: black'" th:text="${book.getBookName() + ', ' + book.getBookAuthor() + ', ' + book.getBookYear()}">user</a>
     </div>
 </div>
 <div th:if="${#lists.isEmpty(personBooks)}">

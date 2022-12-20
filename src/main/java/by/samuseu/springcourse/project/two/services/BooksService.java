@@ -9,8 +9,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -43,31 +45,41 @@ public class BooksService {
         return booksRepository.findById(id).orElse(null);
     }
 
-    public List<Book> findByBookName(String bookName) {
-        return booksRepository.findByBookName(bookName);
+    public Optional<Book> findBookByBookName(String bookName) {
+        return booksRepository.findBookByBookName(bookName);
     }
 
     public List<Book> findByBookNameStartsWith(String bookName) {
-        return booksRepository.findByBookNameStartsWith(bookName);
+        return bookName != null ? booksRepository.findByBookNameStartsWith(bookName) : null;
     }
+
 
     @Transactional
     public void assignBook(int bookId, Person owner) {
-        booksRepository.findById(bookId).orElse(null).setOwner(owner);
         booksRepository.findById(bookId).orElse(null).setDateOfAssignment(new Date());
+        booksRepository.findById(bookId).orElse(null).setOwner(owner);
     }
 
-//    public boolean isExpired(int bookId) {
-//        Book book = booksRepository.findById(bookId).orElse(null);
-//
-//
-//        return false;
-//    }
+    public List<Book> expiredBook(List<Book> inputList) {
+        List<Book> outBook = new ArrayList<>();
+        for (Book book: inputList) {
+            long milliseconds = new Date().getTime() - book.getDateOfAssignment().getTime();
+            int days = (int) (milliseconds / (24 * 60 * 60 * 1000));
+            if (days > 10) {
+                book.setExpired(true);
+            } else {
+                book.setExpired(false);
+            }
+            outBook.add(book);
+        }
+        return outBook;
+    }
 
     @Transactional
     public void releaseBook(int bookId) {
-        booksRepository.findById(bookId).orElse(null).setOwner(null);
-        booksRepository.findById(bookId).orElse(null).setDateOfAssignment(null);
+        Book book = booksRepository.findById(bookId).orElse(null);
+        book.setOwner(null);
+        book.setDateOfAssignment(null);
     }
 
     @Transactional

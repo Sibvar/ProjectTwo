@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -25,6 +26,10 @@ public class PeopleService {
 
     public Person findOne(int id) {
         return peopleRepository.findById(id).orElse(null);
+    }
+
+    public Optional<Person> findPersonByPersonName(String personName) {
+        return peopleRepository.findPersonByPersonName(personName);
     }
 
     @Transactional

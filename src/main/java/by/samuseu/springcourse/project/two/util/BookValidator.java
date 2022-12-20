@@ -2,6 +2,7 @@ package by.samuseu.springcourse.project.two.util;
 
 import by.samuseu.springcourse.project.two.models.Book;
 import by.samuseu.springcourse.project.two.services.BooksService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import org.springframework.validation.Errors;
@@ -12,6 +13,7 @@ public class BookValidator implements Validator {
 
     private final BooksService booksService;
 
+    @Autowired
     public BookValidator(BooksService booksService) {
         this.booksService = booksService;
     }
@@ -25,8 +27,8 @@ public class BookValidator implements Validator {
     public void validate(Object target, Errors errors) {
         Book book = (Book) target;
 
-//        if (booksService.findByBookName(book.getBookName()).isPresent()) {
-//            errors.rejectValue("bookName", "", "Книга с таким названием уже есть в базе");
-//        }
+        if (booksService.findBookByBookName(book.getBookName()).isPresent()) {
+            errors.rejectValue("bookName", "", "Книга с таким названием уже есть в базе");
+        }
     }
 }

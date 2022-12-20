@@ -42,6 +42,12 @@ public class BooksController {
         return "books/index";
     }
 
+    @GetMapping("/search")
+    public String search(Model model, @ModelAttribute("book") Book book) {
+        model.addAttribute("foundBooks", booksService.findByBookNameStartsWith(book.getBookName()));
+        return "books/search";
+    }
+
     @GetMapping("/new")
     public String newBook(@ModelAttribute("book") Book book) {
         return "books/new";
